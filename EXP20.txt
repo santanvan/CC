@@ -1,0 +1,23 @@
+def main():
+    n = int(input('Enter number of productions: '))
+    grammar = []
+    operator_grammar = True 
+    for i in range(n):
+        production = input(f'Enter production {i+1}: ') 
+        grammar.append(production)
+    
+    for production in grammar:
+        if '#' in production[3:]:
+            operator_grammar = False
+    
+    for symbol in range(len(production[3:])-1):
+        if production[3:][symbol].isupper() and production[3:][symbol+1].isupper(): 
+            operator_grammar = False
+            
+    if operator_grammar:
+        print('Given grammar is operator grammar.') 
+    else:
+        print('Given grammar is not operator grammar.')
+
+if  __name__== '__main__': 
+    main()

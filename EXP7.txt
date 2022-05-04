@@ -1,0 +1,73 @@
+#include <stdio.h> 
+#include <string.h> 
+#include <stdlib.h>
+
+int isDelimiter(char ch)
+{
+if (ch == ' ' || ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == ',' || ch == ';' || ch == '>' || ch == '<' || ch == '=' || ch == '(' || ch == ')' || ch == '[' || ch == ']' || ch == '{' || ch == '}') return 1;
+return 0;
+}
+
+int validIdentifier(char *str)
+{
+if (str[0] == '0' || str[0] == '1' || str[0] == '2' ||
+str[0] == '3' || str[0] == '4' || str[0] == '5' ||
+str[0] == '6' || str[0] == '7' || str[0] == '8' || str[0] == '9' || isDelimiter(str[0]) == 1) return 0;
+return 1;
+}
+
+int isKeyword(char *str)
+{
+if (!strcmp(str, "if") || !strcmp(str, "else") ||
+!strcmp(str, "while") || !strcmp(str, "do") ||
+!strcmp(str, "break") ||
+!strcmp(str, "continue") || !strcmp(str, "int") || !strcmp(str, "double") || !strcmp(str, "float") ||
+!strcmp(str, "return") || !strcmp(str, "char") || !strcmp(str, "case") || !strcmp(str, "char") ||
+!strcmp(str, "sizeof") || !strcmp(str, "long") || !strcmp(str, "short") || !strcmp(str, "typedef") ||
+ 
+!strcmp(str, "switch") || !strcmp(str, "unsigned") || !strcmp(str, "void") || !strcmp(str, "static") ||
+!strcmp(str, "struct") || !strcmp(str, "goto")) return 1;
+return 0;
+}
+
+char *subString(char *str, int left, int right)
+{
+int i;
+char *subStr = (char *)malloc( sizeof(char) * (right - left + 2));
+for (i = left; i <= right; i++) subStr[i - left] = str[i];
+subStr[right - left + 1] = '\0'; return (subStr);
+}
+
+void parse(char *str)
+{
+int left = 0, right = 0; int len = strlen(str); int count = 0;
+while (right <= len && left <= right)
+{
+if (isDelimiter(str[right]) == 0) right++;
+if (isDelimiter(str[right]) == 1 && left == right)
+{
+right++; left = right;
+}
+else if (isDelimiter(str[right]) == 1 && left != right || (right == len && left != right))
+{
+char *subStr = subString(str, left, right - 1);
+if (isKeyword(subStr) == 0 && validIdentifier(subStr) == 1 && isDelimiter(str[right - 1]) ==
+0)
+{
+count++;
+printf("%s	id%d\n", subStr,count);
+}
+left = right;
+}
+}
+return;
+ 
+}
+
+int main()
+{
+char str[50];
+printf("Enter a statement: "); gets(str);
+printf("\n"); printf("Symbol Table\n"); parse(str);
+return (0);
+}

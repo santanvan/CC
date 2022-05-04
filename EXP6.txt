@@ -1,0 +1,13 @@
+import re
+
+def main():
+    statement = input('Enter statement:')
+    regex1 = re.search("//(.*)", statement)
+    regex2 = re.search("/\\*(.*?)\\*/", statement)
+    if regex1 or regex2:
+        print("It is a comment!")
+    else:
+        print("It is not a comment!")
+
+if  __name__== '__main__':
+    main()
